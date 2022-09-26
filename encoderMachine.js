@@ -17,10 +17,7 @@ class EncoderMachine {
   }
 
   countEachUniqueCharList(userInputString, uniqueCharList) {
-    let countedCharList = uniqueCharList.map((char) => ({
-      char: char,
-      count: 0,
-    }));
+    let countedCharList = createCountableList(uniqueCharList);
     countedCharList.forEach((uniqueChar) => {
       userInputString.forEach((char) => {
         if (uniqueChar.char === char) {
@@ -32,7 +29,7 @@ class EncoderMachine {
   }
 
   getEncodedString(countedCharList) {
-    const encodedList = countedCharList.map((char) => char.char + char.count);
+    const encodedList = genEncodedList(countedCharList);
     const encodedString = encodedList.join("");
     return encodedString;
   }
@@ -58,6 +55,17 @@ function createNoWhiteSpaceString() {
   const charListWithWhiteSpace = genCharList(trimedString);
   const charListNoWhiteSpace = filterWhiteSpace(charListWithWhiteSpace);
   return charListNoWhiteSpace;
+}
+
+function createCountableList(uniqueCharList) {
+  return uniqueCharList.map((char) => ({
+    char: char,
+    count: 0,
+  }));
+}
+
+function genEncodedList(countedCharList) {
+  return countedCharList.map((char) => char.char + char.count);
 }
 
 module.exports = { EncoderMachine };
