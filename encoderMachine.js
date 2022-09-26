@@ -3,19 +3,38 @@ const prompt = require("prompt-sync")({ sigint: true });
 class EncoderMachine {
   constructor(charList = createNoWhiteSpaceString()) {
     this.inputStringInArrayform = charList;
-    this.inputString = "";
   }
+
   getUserInputString() {
-    console.log("aaa");
-    // this.inputString = getUserInput();
+    return this.inputStringInArrayform;
   }
 
-  echo() {
-    return console.log("Echo!");
+  getUniqueCharList() {
+    const uniqueCharList = this.inputStringInArrayform.filter(
+      (char, index) => this.inputStringInArrayform.indexOf(char) === index
+    );
+    return uniqueCharList;
   }
 
-  getCardNumber() {
-    return this.cards.length;
+  countEachUniqueCharList(userInputString, uniqueCharList) {
+    let countedCharList = uniqueCharList.map((char) => ({
+      char: char,
+      count: 0,
+    }));
+    countedCharList.forEach((uniqueChar) => {
+      userInputString.forEach((char) => {
+        if (uniqueChar.char === char) {
+          uniqueChar.count += 1;
+        }
+      });
+    });
+    return countedCharList;
+  }
+
+  getEncodedString(countedCharList) {
+    const encodedList = countedCharList.map((char) => char.char + char.count);
+    const encodedString = encodedList.join("");
+    return encodedString;
   }
 }
 
@@ -30,11 +49,15 @@ function trimString(string) {
 function genCharList(string) {
   return string.split("");
 }
+function filterWhiteSpace(charList) {
+  return charList.filter((char) => char !== " ");
+}
 function createNoWhiteSpaceString() {
   const string = getUserInput();
   const trimedString = trimString(string);
   const charListWithWhiteSpace = genCharList(trimedString);
-  const charListNoWhiteSpace = charListWithWhiteSpace.filter((char) => !!char);
+  const charListNoWhiteSpace = filterWhiteSpace(charListWithWhiteSpace);
+  return charListNoWhiteSpace;
 }
 
 module.exports = { EncoderMachine };
